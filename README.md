@@ -7,6 +7,12 @@
 
 [空青团中央怒怼视觉中国：国旗、国徽的版权也是贵公司的？@视觉中国影像](https://weibo.com/3937348351/Hp8sp9JzQ)
 
-视觉中国水印生成器: https://wenotpro.github.io/vcg/
+### 视觉中国水印生成器
 
-视觉中国 (vcg.com) 的劣迹请大家在 Issue 中补充
+https://wenotpro.github.io/vcg/
+
+>  ![](vcghead.png)
+
+### 劣迹
+
+视觉中国 (vcg.com) 的劣迹请大家在 [Issue](https://github.com/wenotpro/vcg/issues/new) 中补充

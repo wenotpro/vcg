@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>视觉中国</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
+    <style>
+        #container .input-group {
+            width: 180px;
+            margin: 30px auto;
+        }
+
+        #pic-watermark {
+            position: absolute;
+            clip: rect(0 0 0 0);
+        }
+
+        #preview {
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<div id="container" class="jumbotron">
+    <h1 class="text-center">视觉中国</h1>
+    <div class="input-group">
+        <input type="file" id="pic-select" accept="image/*" class="custom-file-input">
+        <label class="custom-file-label" for="pic-select">选择图片</label>
+    </div>
+    <div class="row">
+        <img id="pic-watermark" src="./watermark.png">
+        <p id="preview" class="text-center"></p>
+    </div>
+</div>
+<script>
+    // original code from https://www.zhangxinxu.com/study/201705/js-canvas-image-watermark-synthesis.html
+    $(function () {
+        function imgTogether(url, callback) {
+            var imgUpload = new Image();
+            imgUpload.onload = function () {
+                var canvas = document.createElement('canvas');
+                var width = imgUpload.width;
+                var height = imgUpload.height;
+                var watermarkEle = $('#pic-watermark').get(0);
+
+                if (width < watermarkEle.width || height < watermarkEle.height + 200) {
+                    alert('图片尺寸太小');
+                    return;
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+
+                var context = canvas.getContext('2d');
+
+                context.drawImage(imgUpload, 0, 0);
+                context.drawImage(watermarkEle, width - watermarkEle.width, height - watermarkEle.height - height / 5);
+                callback(canvas.toDataURL('image/png'));
+            };
+            imgUpload.src = url;
+        }
+
+        $('#pic-select').on('change', function (e) {
+            var reader = new FileReader();
+            var file = e.target.files[0] || e.dataTransfer.files[0];
+
+            reader.onload = function (e) {
+                var base64 = e.target.result;
+                if (base64.length > 1024 * 1024 * 10) {
+                    alert('图片尺寸请小于10MB');
+                    return;
+                } else {
+                    imgTogether(base64, function (url) {
+                        $('#preview').html('<img src="' + url + '">');
+                    });
+                }
+            };
+
+            reader.readAsDataURL(file);
+        });
+    });
+</script>
+</body>
+</html>
